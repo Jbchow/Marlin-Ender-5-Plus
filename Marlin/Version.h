@@ -125,7 +125,7 @@
 #elif(ENABLED(MachineEnder5))
 #define MACHINE_NAME "TM3D Ender5"
 #elif(ENABLED(MachineEnder5Plus))
-#define MACHINE_NAME "TM3D E5 Plus"
+#define MACHINE_NAME "TM3D E5 Plus (Jon)"
 #elif(ENABLED(MachineCR20))
 #define MACHINE_NAME "SuPeR CR-20"
 #elif(ENABLED(MachineCR10Orig))
