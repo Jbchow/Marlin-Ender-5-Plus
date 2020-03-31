@@ -17,7 +17,7 @@
 //#define MachineCRX
 //#define MachineCR10Max
 //#define MachineS4
-#define MachineS5
+//#define MachineS5
 //#define MachineCR2020 // Industrial Series 2020
 
 // Atmega1284P machines Needs a bootloader flashed before installation
@@ -1945,7 +1945,7 @@
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  * By default the firmware assumes HIGH=FILAMENT PRESENT.
  */
-#if (NONE(MachineCR10Orig, MachineCR20, MachineEnder4, MachineEnder5, MachineCRX) || ANY(AddonFilSensor, lerdgeFilSensor, DualFilSensors  ))
+#if (NONE(MachineCR10Orig, MachineCR20, MachineEnder4, MachineEnder5, MachineCRX, Melzi_To_SBoardUpgrade) || ANY(AddonFilSensor, lerdgeFilSensor, DualFilSensors  ))
   #define FILAMENT_RUNOUT_SENSOR
 #endif
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
@@ -2712,10 +2712,10 @@
   #define ENDER2_STOCKDISPLAY
 #elif ANY(MachineCR20, MachineCR2020)
   #define MKS_MINI_12864
-#elif NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, OrigLCD, MachineCR10Orig) || ENABLED(GraphicLCD)
-  #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 #elif ANY(OrigLCD, MachineCR10Orig)
   #define CR10_STOCKDISPLAY
+#elif NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, OrigLCD, MachineCR10Orig) || ENABLED(GraphicLCD)
+  #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 #endif
 //
 // CONTROLLER TYPE: I2C
