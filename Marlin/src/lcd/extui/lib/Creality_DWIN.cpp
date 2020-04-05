@@ -1813,6 +1813,10 @@ void onFactoryReset()
 	SERIAL_ECHOLN("==onFactoryReset==");
 }
 
+void onMeshUpdate(const int8_t xpos, const int8_t ypos, const ExtUI::probe_state_t state) {
+    onMeshUpdate(xpos, ypos, 0.0f);
+  }
+
 void onMeshUpdate(const int8_t xpos, const int8_t ypos, const float zval)
 {
   if(waitway==3)

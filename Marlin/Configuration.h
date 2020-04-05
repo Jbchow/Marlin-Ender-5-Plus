@@ -103,7 +103,7 @@
 //#define ForceCRXDisplay
 //#define Force10SProDisplay
 
-//#define AddonFilSensor //Adds a filamnt runout sensor to the CR20 or Ender 4
+//#define AddonFilSensor //Adds a filament runout sensor to the CR20 or Ender 4
 //#define lerdgeFilSensor //Using lerdge filament sensor, which is opposite polarity to stock
 //#define DualFilSensors //Using dual filament sensors on XMax and YMAX
 //#define FilamentEncoder //Using filamet jam sensor such as the Bigtreetech Encoder wheel
@@ -453,6 +453,8 @@
 
 #if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11) && NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max) || (ENABLED(GraphicLCD) && NONE(Force10SProDisplay, ForceCRXDisplay))
   #define SERIAL_PORT_2 0
+#elif ANY(SKR13, SKR14, SKR14Turbo)
+  #define DGUS_SERIAL_PORT 0
 #endif
 
 /**
