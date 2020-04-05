@@ -109,7 +109,7 @@
  * here we define this default string as the date where the latest release
  * version was tagged.
  */
-#define STRING_DISTRIBUTION_DATE "2020-03-30"
+#define STRING_DISTRIBUTION_DATE "2020-04-04"
 
 /**
  * Defines a generic printer name to be output to the LCD after booting Marlin.
@@ -125,7 +125,7 @@
 #elif(ENABLED(MachineEnder5))
 #define MACHINE_NAME "TM3D Ender5"
 #elif(ENABLED(MachineEnder5Plus))
-#define MACHINE_NAME "TM3D E5 Plus (Jon)"
+#define MACHINE_NAME "TM3D E5 Plus-J"
 #elif(ENABLED(MachineCR20))
 #define MACHINE_NAME "SuPeR CR-20"
 #elif(ENABLED(MachineCR10Orig))
