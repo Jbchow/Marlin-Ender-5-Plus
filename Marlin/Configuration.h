@@ -15,6 +15,7 @@
 //#define MachineCR10SPro // Graphics LCD Requires soldering R64 and R66
 //#define MachineCR10SProV2 // Second Gen 10S Pro with BLTouch wired to Z Max
 //#define MachineCRX
+//#define MachineCRXPro
 //#define MachineCR10Max
 //#define MachineS4
 //#define MachineS5
@@ -382,7 +383,10 @@
   #define MeshStd
 #endif
 
-#if(ENABLED(MachineCRX))
+#if ENABLED(MachineCRXPro)
+  #define MachineCRX
+#endif
+#if ENABLED(MachineCRX)
   #define MachineCR10Std
   #define Dual_BowdenSplitterY
 #endif
@@ -415,6 +419,9 @@
   #define LowMemoryBoard
 #endif
 //Show the Marlin bootscreen on startup. ** ENABLE FOR PRODUCTION **
+#if NONE(MachineEnder4, MachineCR10SPro, MachineCRX, MachineCR10Max, MachineEnder5Plus) || ENABLED(GraphicLCD)
+  #undef SolidBedMounts
+#endif
 
 #if NONE(MachineCR10Orig, MachineEnder4, MachineCR10SPro, MachineCRX, MachineCR10Max, MachineEnder5Plus) || ENABLED(GraphicLCD)
   #define SHOW_BOOTSCREEN
@@ -428,6 +435,7 @@
 /**
  * Select the serial port on the board to use for communication with the host.
  * This allows the connection of wireless adapters (for instance) to non-default port pins.
+ * Serial port -1 is the USB emulated serial port, if available.
  * Note: The first serial port (-1 or 0) will always be used by the Arduino bootloader.
  *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
@@ -440,24 +448,12 @@
 
 /**
  * Select a secondary serial port on the board to use for communication with the host.
- * This allows the connection of wireless adapters (for instance) to non-default port pins.
- * Serial port -1 is the USB emulated serial port, if available.
- *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
 
 #if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11) && NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max) || (ENABLED(GraphicLCD) && NONE(Force10SProDisplay, ForceCRXDisplay))
   #define SERIAL_PORT_2 0
-#elif ANY(SKR13, SKR14, SKR14Turbo)
-  #define DGUS_SERIAL_PORT 0
-#elif ENABLED(SKR11PRO)
-  #define DGUS_SERIAL_PORT 1
-#elif ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max) && DISABLED(GraphicLCD)
-  //#define DGUS_SERIAL_PORT 2
 #endif
-
-
-#define bDGUS_SERIAL_STATS_RX_BUFFER_OVERRUNS false
 
 /**
  * This setting determines the communication speed of the printer.
@@ -729,6 +725,7 @@
  *   331 : (3.3V scaled thermistor 1 table for MEGA)
  *   332 : (3.3V scaled thermistor 1 table for DUE)
  *     2 : 200k thermistor - ATC Semitec 204GT-2 (4.7k pullup)
+ *   202 : 200k thermistor - Copymaster 3D
  *     3 : Mendel-parts thermistor (4.7k pullup)
  *     4 : 10k thermistor !! do not use it for a hotend. It gives bad resolution at high temp. !!
  *     5 : 100K thermistor - ATC Semitec 104GT-2/104NT-4-R025H42G (Used in ParCan & J-Head) (4.7k pullup)
@@ -1259,7 +1256,7 @@
   #define EStepsmm 409
 #elif ANY(EZRstruder, MachineCR10SV2)
   #define EStepsmm 93
-#elif ANY(MachineCR10SPro, MachineCR10Max)
+#elif ANY(MachineCR10SPro, MachineCR10Max, MachineCRXPro)
   #define EStepsmm 140
 #elif ENABLED(MachineCR2020)
   #define EStepsmm 113
@@ -1363,6 +1360,8 @@
   #define DEFAULT_XJERK 10.0
   #define DEFAULT_YJERK 10.0
   #define DEFAULT_ZJERK  0.3
+
+  //#define TRAVEL_EXTRA_XYJERK 0.0     // Additional jerk allowance for all travel moves
 
   //#define LIMITED_JERK_EDITING        // Limit edit via M205 or LCD to DEFAULT_aJERK * 2
   #if ENABLED(LIMITED_JERK_EDITING)
@@ -1521,6 +1520,14 @@
   #define SMART_EFFECTOR_MOD_PIN  -1  // Connect a GPIO pin to the Smart Effector MOD pin
 #endif
 
+/**
+ * Use StallGuard2 to probe the bed with the nozzle.
+ * Requires stallGuard-capable Trinamic stepper drivers.
+ * CAUTION: This can damage machines with Z lead screws.
+ *          Take extreme care when setting up this feature.
+ */
+//#define SENSORLESS_PROBING
+
 //
 // For Z_PROBE_ALLEN_KEY see the Delta example configurations.
 //
@@ -1545,7 +1552,9 @@
  *
  * Specify a Probe position as { X, Y, Z }
  */
-#if ENABLED(MachineCRX, HotendStock)
+#if ENABLED(MachineCRXPro, HotendStock, ABL_BLTOUCH)
+  #define NOZZLE_TO_PROBE_OFFSET { 48, 3, 0 }
+#elif ENABLED(MachineCRX, HotendStock)
    #if ENABLED(ABL_BLTOUCH)
      #define NOZZLE_TO_PROBE_OFFSET { -22, -45, 0 }
    #elif ANY(ABL_EZABL, ABL_NCSW)
@@ -1932,7 +1941,7 @@
   #define MAX_SOFTWARE_ENDSTOP_Z
 #endif
 #if(NONE(MachineCR10Orig, LowMemoryBoard))
-  #if ENABLED(MIN_SOFTWARE_ENDSTOPS) || ENABLED(MAX_SOFTWARE_ENDSTOPS)
+  #if EITHER(MIN_SOFTWARE_ENDSTOPS, MAX_SOFTWARE_ENDSTOPS)
     #define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
   #endif
 #endif
@@ -2308,6 +2317,7 @@
 #else
   #define DISABLE_M503        // Saves ~2700 bytes of PROGMEM. Disable for release!
 #endif
+#define EEPROM_BOOT_SILENT    // Keep M503 quiet and only give errors during first load
 #if ENABLED(EEPROM_SETTINGS)
   #define EEPROM_AUTO_INIT  // Init EEPROM automatically on any errors.
 #endif

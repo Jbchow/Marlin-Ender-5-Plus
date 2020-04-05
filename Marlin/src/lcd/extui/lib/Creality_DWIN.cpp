@@ -1902,7 +1902,7 @@ void onConfigurationStoreRead(bool success)
 }
 
 #if ENABLED(POWER_LOSS_RECOVERY)
-  void OnPowerLossResume() {
+  void onPowerLossResume() {
     SERIAL_ECHOLN("==OnPowerLossResume==");
     startprogress = 254;
     InforShowStatus = true;
@@ -1913,7 +1913,7 @@ void onConfigurationStoreRead(bool success)
 #endif
 
 #if HAS_PID_HEATING
-  void OnPidTuning(const result_t rst) {
+  void onPidTuning(const result_t rst) {
     // Called for temperature PID tuning result
     rtscheck.RTS_SndData(pid_hotendAutoTemp, HotendPID_AutoTmp);
         rtscheck.RTS_SndData(pid_bedAutoTemp, BedPID_AutoTmp);
