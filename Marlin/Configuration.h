@@ -896,9 +896,9 @@
       #define DEFAULT_Ki 2.17
       #define DEFAULT_Kd 73.44
     #elif ENABLED(MachineEnder5Plus)
-      #define  DEFAULT_Kp 14.72
-      #define  DEFAULT_Ki 0.89
-      #define  DEFAULT_Kd 61.22
+      #define  DEFAULT_Kp 21.06
+      #define  DEFAULT_Ki 1.71
+      #define  DEFAULT_Kd 64.69
     #elif ENABLED(MachineCRX)
       #define DEFAULT_Kp 19.00
       #define DEFAULT_Ki 1.40
@@ -980,6 +980,10 @@
     #define  DEFAULT_bedKp 690.34
     #define  DEFAULT_bedKi 111.47
     #define  DEFAULT_bedKd 1068.83
+  #elif ENABLED(MachineEnder5Plus)
+    #define  DEFAULT_bedKp 187.41
+    #define  DEFAULT_bedKi 18.60
+    #define  DEFAULT_bedKd 1258.89
   #else
     #define  DEFAULT_bedKp 690.34
     #define  DEFAULT_bedKi 111.47
@@ -1262,6 +1266,8 @@
   #define EStepsmm 140
 #elif ENABLED(MachineCR2020)
   #define EStepsmm 113
+#elif ENABLED(MachineEnder5Plus)
+  #define EStepsmm 105.1
 #else
   #define EStepsmm 95
 #endif
