@@ -306,6 +306,9 @@
   #endif
   #define MeshStd
   #define lerdgeFilSensor
+  #if DISABLED(BedAC)
+    #define BedDC
+  #endif
 #endif
 
 #if ENABLED(MachineCR10Max)
@@ -317,6 +320,9 @@
   #endif
   #define MeshStd
   #define lerdgeFilSensor
+  #if DISABLED(BedAC)
+    #define BedDC
+  #endif
 #endif
 
 #if ENABLED(MachineEnder5Plus)
@@ -332,10 +338,16 @@
     #define ABL_BI
   #endif
   #define MeshStd
+  #if DISABLED(BedAC)
+    #define BedDC
+  #endif
 #endif
 
 #if ENABLED(MachineCR10SV2)
   #define lerdgeFilSensor
+  #if DISABLED(BedAC)
+    #define BedDC
+  #endif
 #endif
 
 #if ANY(MachineCR10SV2, MachineCR10Max, MachineCR10SProV2) && ANY(ABL_EZABL, ABL_NCSW, ABL_BLTOUCH, ABL_TOUCH_MI) && NONE(SKR13, SKR14, SKR14Turbo, SKRPRO11)
@@ -371,6 +383,22 @@
   #endif
 #endif
 
+#if ENABLED(MachineCRXPro)
+  #define MachineCRX
+  #if NONE(ABL_NCSW, ABL_EZABL, ABL_BLTOUCH)
+    #define ABL_BLTOUCH
+  #endif
+  #define Force10SProDisplay
+#endif
+
+#if ENABLED(MachineCRX)
+  #define MachineCR10Std
+  #define Dual_BowdenSplitterY
+  #if DISABLED(BedAC)
+    #define BedDC
+  #endif
+#endif
+
 #if NONE(HotendStock, HotendE3D)
   #define HotendStock
 #endif
@@ -381,14 +409,6 @@
 
 #if NONE(MeshFast, MeshStd, MeshFine, MeshExtreme)
   #define MeshStd
-#endif
-
-#if ENABLED(MachineCRXPro)
-  #define MachineCRX
-#endif
-#if ENABLED(MachineCRX)
-  #define MachineCR10Std
-  #define Dual_BowdenSplitterY
 #endif
 
 #if ENABLED(MachineCR20Pro)
@@ -402,6 +422,9 @@
     #define ABL_BI
   #endif
   #define SolidBedMounts
+  #if DISABLED(BedAC)
+    #define BedDC
+  #endif
 #endif
 
 #if ENABLED(SKRPRO11)

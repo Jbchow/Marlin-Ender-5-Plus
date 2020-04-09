@@ -1258,7 +1258,9 @@
    *
    * :[ 'LCD', 'ONBOARD', 'CUSTOM_CABLE' ]
    */
-  #define SDCARD_CONNECTION ONBOARD
+  #if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11)
+    #define SDCARD_CONNECTION ONBOARD
+  #endif
 
 #endif // SDSUPPORT
 
@@ -1293,7 +1295,7 @@
   // A bigger font is available for edit items. Costs 3120 bytes of PROGMEM.
   // Western only. Not available for Cyrillic, Kana, Turkish, Greek, or Chinese.
   #if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11)
-  #define USE_BIG_EDIT_FONT
+    #define USE_BIG_EDIT_FONT
   #endif
 
   // A smaller font may be used on the Info Screen. Costs 2300 bytes of PROGMEM.
@@ -3381,7 +3383,7 @@
 //
 // M43 - display pin status, toggle pins, watch pins, watch endstops & toggle LED, test servo probe
 //
-//#define PINS_DEBUGGING
+#define PINS_DEBUGGING
 
 // Enable Marlin dev mode which adds some special commands
 //#define MARLIN_DEV_MODE
