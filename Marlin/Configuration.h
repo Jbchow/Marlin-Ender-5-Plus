@@ -337,7 +337,6 @@
   #if DISABLED(ABL_UBL)
     #define ABL_BI
   #endif
-  #define MeshStd
   #if DISABLED(BedAC)
     #define BedDC
   #endif
@@ -2133,7 +2132,7 @@
   #else
     #define GRID_MAX_POINTS_X 5
   #endif
-#elif ENABLED( MeshFine)
+#elif ENABLED(MeshFine)
   #define GRID_MAX_POINTS_X 8
 #elif ENABLED(MeshExtreme)
   #define GRID_MAX_POINTS_X 15
