@@ -1258,7 +1258,7 @@
    *
    * :[ 'LCD', 'ONBOARD', 'CUSTOM_CABLE' ]
    */
-  #if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11)
+  #if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11, MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max)
     #define SDCARD_CONNECTION ONBOARD
   #endif
 
