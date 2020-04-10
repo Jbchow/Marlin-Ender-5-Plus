@@ -66,6 +66,7 @@
  //#define E3DHemera
  //#define CrealityTitan
 
+ //#define MicroswissDirectDrive
  //#define DirectDrive // Any direct drive extruder, reduces filament change lengths
 
 /*
@@ -137,6 +138,7 @@
  * Advanced motherboard replacement options
  */
 
+//#define OriginalCrealitySquareBoard
 //#define MachineCR10Orig // Forces Melzi board
 //#define Melzi_To_SBoardUpgrade // Upgrade Melzi board to 10S board
 //#define CrealitySilentBoard // Creality board with TMC2208 Standalone drivers. Disables Linear Advance
@@ -194,7 +196,7 @@
 //#define EnclosureTempSensor // Uses PT100 Probe hooked to A12, only partially implemented upstream
 //#define EnclosureHeater //Planned to use A11 to control heater upstream, and repurpose the unused y max as the fan output. Not yet fully implemented upstream
 
-
+//#define UnstableTemps // define if temps are unstable and you need a temporary workaround
 
 /**
  * Marlin 3D Printer Firmware
@@ -292,11 +294,19 @@
 #endif
 
 #if ENABLED(CrealityTitan)
-#define DirectDrive
-#define E3DTitan
+  #define DirectDrive
+  #define E3DTitan
 #endif
 
-#if(ENABLED(MachineCR10SPro))
+#if ENABLED(OriginalCrealitySquareBoard)
+  #define SD_DETECT_PIN -1
+#endif
+
+#if ENABLED(MicroswissDirectDrive)
+  #define DirectDrive
+#endif
+
+#if ENABLED(MachineCR10SPro)
   #define MachineCR10Std
   #if DISABLED(ABL_BLTOUCH, ABL_EZABL, ABL_TOUCH_MI)
     #define ABL_NCSW
@@ -368,6 +378,7 @@
   #define SUICIDE_PIN_INVERTING true
   #define DirectDrive
 #endif
+
 #if ENABLED(PLUS)
   #if DISABLED(MachineCR10Orig)
     #define lerdgeFilSensor //Using lerdge filament sensor, which is opposite polarity to stock)
@@ -847,8 +858,13 @@
 #define MAX_REDUNDANT_TEMP_SENSOR_DIFF 10
 
 #define TEMP_RESIDENCY_TIME     2  // (seconds) Time to wait for hotend to "settle" in M109
-#define TEMP_WINDOW              1  // (°C) Temperature proximity for the "temperature reached" timer
-#define TEMP_HYSTERESIS          3  // (°C) Temperature proximity considered "close enough" to the target
+#if ENABLED(UnstableTemps)
+  #define TEMP_WINDOW              5  // (°C) Temperature proximity for the "temperature reached" timer
+  #define TEMP_HYSTERESIS          7  // (°C) Temperature proximity considered "close enough" to the target
+#else
+  #define TEMP_WINDOW              1  // (°C) Temperature proximity for the "temperature reached" timer
+  #define TEMP_HYSTERESIS          3  // (°C) Temperature proximity considered "close enough" to the target
+#endif
 
 #define TEMP_BED_RESIDENCY_TIME 5  // (seconds) Time to wait for bed to "settle" in M190
 #define TEMP_BED_WINDOW          1  // (°C) Temperature proximity for the "temperature reached" timer
@@ -1278,6 +1294,8 @@
 
 #if ENABLED(CrealityTitan)
   #define EStepsmm 382.14
+#elif ENABLED(MicroswissDirectDrive)
+  #define EStepsmm 130
 #elif(ENABLED(Bondtech) || ENABLED(E3DTitan))
   #define EStepsmm 415
 #elif ENABLED(E3DHemera)
@@ -1590,7 +1608,7 @@
    #elif ANY(ABL_EZABL, ABL_NCSW)
      #define NOZZLE_TO_PROBE_OFFSET { -44, -10, 0 }
    #endif
-#elif ANY(MachineCR10SPro, MachineCR10Max) && ENABLED(HotendStock)
+#elif ANY(MachineCR10SPro, MachineCR10Max) && ENABLED(HotendStock) && DISABLED(MicroswissDirectDrive)
   #define NOZZLE_TO_PROBE_OFFSET { -27, 0, 0 }
 #elif (ANY(ABL_BLTOUCH, ABL_EZABL,ABL_NCSW) && ENABLED(E3DHemera))
     #define NOZZLE_TO_PROBE_OFFSET { -40, 0, 0 }
@@ -1600,9 +1618,11 @@
   #elif ENABLED(ABL_EZABL) || ENABLED(ABL_NCSW)
     #define NOZZLE_TO_PROBE_OFFSET { 45, 7, 0 }
   #endif
+#elif ENABLED(MicroswissDirectDrive) && ENABLED(ABL_BLTOUCH)
+  #define NOZZLE_TO_PROBE_OFFSET { -45, -5, 0 }
 #elif (ENABLED(ABL_BLTOUCH) && ENABLED(HotendStock))
   #define NOZZLE_TO_PROBE_OFFSET { -41, -8, 0 }
-#elif ((ENABLED(ABL_EZABL) || ENABLED(ABL_NCSW)) && ENABLED(HotendStock))
+#elif ((ANY(ABL_EZABL, ABL_NCSW)) && ENABLED(HotendStock))
   #if ENABLED(CREALITY_ABL_MOUNT)
     #define NOZZLE_TO_PROBE_OFFSET { -55, -15, 0 }
   #else
@@ -1931,7 +1951,10 @@
 
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#if ENABLED(TOUCH_MI_PROBE)
+#if ENABLED(MicroswissDirectDrive)
+  #define X_MIN_POS -15
+  #define Y_MIN_POS -10
+#elif ENABLED(TOUCH_MI_PROBE)
   #define X_MIN_POS -4
   #define Y_MIN_POS -10
 #else
@@ -1985,7 +2008,7 @@
  * By default the firmware assumes HIGH=FILAMENT PRESENT.
  */
 #if (NONE(MachineCR10Orig, MachineCR20, MachineEnder4, MachineEnder5, MachineCRX, Melzi_To_SBoardUpgrade) || ANY(AddonFilSensor, lerdgeFilSensor, DualFilSensors  ))
-  #define FILAMENT_RUNOUT_SENSOR
+  //#define FILAMENT_RUNOUT_SENSOR
 #endif
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #if ENABLED(DualFilSensors)
@@ -2746,13 +2769,13 @@
 //======================== LCD / Controller Selection =========================
 //=====================   (I2C and Shift-Register LCDs)   =====================
 //=============================================================================
-#if(ENABLED(MachineEnder4) && DISABLED(GraphicLCD))
+#if ENABLED(MachineEnder4) && DISABLED(GraphicLCD)
   #define REPRAP_DISCOUNT_SMART_CONTROLLER
 #elif ENABLED(MachineEnder2)
   #define ENDER2_STOCKDISPLAY
 #elif ANY(MachineCR20, MachineCR2020)
   #define MKS_MINI_12864
-#elif ANY(OrigLCD, MachineCR10Orig)
+#elif ANY(OrigLCD, MachineCR10Orig) && DISABLED(GraphicLCD)
   #define CR10_STOCKDISPLAY
 #elif NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, OrigLCD, MachineCR10Orig) || ENABLED(GraphicLCD)
   #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER

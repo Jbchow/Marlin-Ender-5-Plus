@@ -1194,7 +1194,7 @@
   /**
    * Auto-report SdCard status with M27 S<seconds>
    */
-  #if NONE(MachineCR10Orig, LowMemoryBoard)
+  #if NONE(MachineCR10Orig, LowMemoryBoard, OriginalCrealitySquareBoard)
     #define AUTO_REPORT_SD_STATUS
   #endif
 

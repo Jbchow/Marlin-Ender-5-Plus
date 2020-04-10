@@ -821,7 +821,7 @@ void tool_change(const uint8_t new_tool, bool no_move/*=false*/) {
     if (new_tool >= EXTRUDERS)
       return invalid_extruder_error(new_tool);
 
-    if (!no_move && !homing_needed()) {
+    if (!no_move && homing_needed()) {
       no_move = true;
       if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPGM("No move (not homed)");
     }
@@ -972,6 +972,8 @@ void tool_change(const uint8_t new_tool, bool no_move/*=false*/) {
       // Return to position and lower again
       if (safe_to_move && !no_move && IsRunning()) {
 
+    SERIAL_ECHOLN(" returning ");
+
         #if ENABLED(SINGLENOZZLE)
           #if FAN_COUNT > 0
             singlenozzle_fan_speed[old_tool] = thermalManager.fan_speed[0];
@@ -989,6 +991,8 @@ void tool_change(const uint8_t new_tool, bool no_move/*=false*/) {
         #endif
 
         #if ENABLED(TOOLCHANGE_FILAMENT_SWAP)
+
+    SERIAL_ECHOLN("return fil ");
           if (should_swap && !too_cold) {
             #if ENABLED(ADVANCED_PAUSE_FEATURE)
               unscaled_e_move(toolchange_settings.swap_length, MMM_TO_MMS(toolchange_settings.prime_speed));
