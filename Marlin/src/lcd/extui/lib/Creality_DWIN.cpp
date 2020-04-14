@@ -39,8 +39,8 @@ namespace ExtUI
   uint16_t idleThrottling = 0;
 
   #if HAS_PID_HEATING
-    uint16_t pid_hotendAutoTemp = 150;
-    uint16_t pid_bedAutoTemp = 70;
+    uint16_t pid_hotendAutoTemp = 205;
+    uint16_t pid_bedAutoTemp = 60;
   #endif
 
 void onStartup()
