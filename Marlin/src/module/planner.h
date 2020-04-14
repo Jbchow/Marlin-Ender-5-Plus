@@ -58,7 +58,7 @@
 // Feedrate for manual moves
 #ifdef MANUAL_FEEDRATE
   constexpr xyze_feedrate_t _mf = MANUAL_FEEDRATE,
-                            manual_feedrate_mm_s { _mf.x / 60.0f, _mf.y / 60.0f, _mf.z / 60.0f, _mf.e / 60.0f };
+                            manual_feedrate_mm_s { _mf.x / 80.0f, _mf.y / 80.0f, _mf.z / 80.0f, _mf.e / 80.0f };
 #endif
 
 #if IS_KINEMATIC && DISABLED(CLASSIC_JERK)
