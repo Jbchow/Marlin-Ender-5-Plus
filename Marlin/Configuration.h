@@ -15,7 +15,7 @@
 //#define MachineCR10SPro // Graphics LCD Requires soldering R64 and R66
 //#define MachineCR10SProV2 // Second Gen 10S Pro with BLTouch wired to Z Max
 //#define MachineCRX
-#define MachineCRXPro
+//#define MachineCRXPro
 //#define MachineCR10Max
 //#define MachineS4
 //#define MachineS5
@@ -109,7 +109,7 @@
 //#define DualFilSensors //Using dual filament sensors on XMax and YMAX
 //#define FilamentEncoder //Using filamet jam sensor such as the Bigtreetech Encoder wheel
 
-#define PurgeBucket //Adds automatic wiping on tool change if purge bucket is installed
+//#define PurgeBucket //Adds automatic wiping on tool change if purge bucket is installed
 
 // Advanced options - Not for most users
 
