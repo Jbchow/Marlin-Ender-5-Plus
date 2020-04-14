@@ -157,7 +157,7 @@ Nozzle nozzle;
    * @param argument depends on the cleaning pattern
    */
   void Nozzle::clean(const uint8_t &pattern, const uint8_t &strokes, const float &radius, const uint8_t &objects, const uint8_t cleans) {
-    xyz_pos_t start[HOTENDS] = NOZZLE_CLEAN_START_POINT, end[HOTENDS] = NOZZLE_CLEAN_END_POINT, middle[HOTENDS] = NOZZLE_CLEAN_CIRCLE_MIDDLE;
+    xyz_pos_t start[EXTRUDERS] = NOZZLE_CLEAN_START_POINT, end[EXTRUDERS] = NOZZLE_CLEAN_END_POINT, middle[EXTRUDERS] = NOZZLE_CLEAN_CIRCLE_MIDDLE;
 
     if (pattern == 2) {
       if (!(cleans & (_BV(X_AXIS) | _BV(Y_AXIS)))) {

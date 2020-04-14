@@ -1931,7 +1931,9 @@
   #define TOOLCHANGE_ZRAISE     2  // (mm)
   #define TOOLCHANGE_NO_RETURN   // Never return to the previous position on tool-change
   #if ENABLED(TOOLCHANGE_NO_RETURN)
-    //#define EVENT_GCODE_AFTER_TOOLCHANGE "G12X"   // G-code to run after tool-change is complete
+    #if ENABLED(PurgeBucket)
+      #define EVENT_GCODE_AFTER_TOOLCHANGE "G12X"   // G-code to run after tool-change is complete
+    #endif
   #endif
 
   // Retract and prime filament on tool-change
@@ -1949,7 +1951,7 @@
    */
   #define TOOLCHANGE_PARK
   #if ENABLED(TOOLCHANGE_PARK)
-    #define TOOLCHANGE_PARK_XY    { X_MAX_POS - 5, Y_MIN_POS + 10 }
+    #define TOOLCHANGE_PARK_XY    { X_MAX_POS, Y_MIN_POS + 10 }
     #define TOOLCHANGE_PARK_XY_FEEDRATE 6000  // (mm/m)
   #endif
 #endif

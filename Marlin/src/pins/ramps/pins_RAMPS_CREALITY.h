@@ -62,3 +62,7 @@
 
 #define SUICIDE_PIN                           12  // Used by CR2020 Industrial series
 #define SUICIDE_PIN_INVERTING true                // Used by CR2020 Industrial series
+
+#if ENABLED(OriginalCrealitySquareBoard)
+  #undef KILL_PIN
+#endif
