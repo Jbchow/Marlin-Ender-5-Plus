@@ -2008,7 +2008,7 @@
  * By default the firmware assumes HIGH=FILAMENT PRESENT.
  */
 #if (NONE(MachineCR10Orig, MachineCR20, MachineEnder4, MachineEnder5, MachineCRX, Melzi_To_SBoardUpgrade) || ANY(AddonFilSensor, lerdgeFilSensor, DualFilSensors  ))
-  //#define FILAMENT_RUNOUT_SENSOR
+  #define FILAMENT_RUNOUT_SENSOR
 #endif
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #if ENABLED(DualFilSensors)
