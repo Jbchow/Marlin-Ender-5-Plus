@@ -1,4 +1,19 @@
-﻿## Creality CR10S Pro, CR-X, CR10 Max and Ender 5 Plus Touch Screen supported firmware
+### Jbchow Ender 5 Plus Version Only
+Built with PlatformIO with the following options enabled: 
+build_flags = ${common.build_flags} -DMachineEnder5Plus -DHotendAllMetal -DBedDC -DABL_UBL -DForce10SProDisplay -DMeshExtreme -DMelziHostOnly
+
+Enabled Extreme Mesh, and Melzi Host Only (Only Using Octoprint to send prints)
+Enabled Filiment Runout Sensor
+Adjusted Extruder speed on reload page to be 200F
+Adjusted Extruder default extend length
+Adjusted PID Page default temps to 205C hot end and 60 bed
+Adjusted Linear advance, Extruder Max Seed, PID settings
+
+Cura Config: https://github.com/Jbchow/E5P_Cura_Settings
+
+## below from master branch﻿
+ 
+ ## Creality CR10S Pro, CR-X, CR10 Max and Ender 5 Plus Touch Screen supported firmware
 
 This branch adds support for the Creality touchscreen machines and was split off from the standard Creality branches due to specific custom changes not found upstream. This includes extensions to the EXTui framework among other smaller tweaks that we have been working towards getting submitted upstream. Machines supported here are :
 
