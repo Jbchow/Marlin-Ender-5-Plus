@@ -1126,7 +1126,7 @@ SERIAL_ECHOLN(PSTR("BeginSwitch"));
         InforShowStatus = true;
         TPShowStatus = false;
         memset(ChangeMaterialbuf, 0, sizeof(ChangeMaterialbuf));
-        ChangeMaterialbuf[1] = ChangeMaterialbuf[0] = 10;
+        ChangeMaterialbuf[1] = ChangeMaterialbuf[0] = 100;
         RTS_SndData(10 * ChangeMaterialbuf[0], FilementUnit1); //It's ChangeMaterialbuf for show,instead of current_position[E_AXIS] in them.
         RTS_SndData(10 * ChangeMaterialbuf[1], FilementUnit2);
         RTS_SndData(getActualTemp_celsius(H0), NozzleTemp);
