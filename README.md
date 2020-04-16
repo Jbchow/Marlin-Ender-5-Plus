@@ -1,4 +1,4 @@
-### Jbchow Ender 5 Plus Version Only
+## Jbchow Ender 5 Plus Version Only
 Built with PlatformIO with the following options enabled: 
 build_flags = ${common.build_flags} -DMachineEnder5Plus -DHotendAllMetal -DBedDC -DABL_UBL -DForce10SProDisplay -DMeshExtreme -DMelziHostOnly
 
@@ -10,6 +10,8 @@ Adjusted PID Page default temps to 205C hot end and 60 bed
 Adjusted Linear advance, Extruder Max Seed, PID settings
 
 Cura Config: https://github.com/Jbchow/E5P_Cura_Settings
+How to Update Screen: https://github.com/Jbchow/Marlin/wiki/Update-Screen-Firmware:-the-Bleeding-branch-has-a-working-screen-config
+How to setup UBL: https://github.com/Jbchow/Marlin/wiki/How-to-setup-Unified-Bed-Leveling-(UBL)
 
 ## below from master branch﻿
  
