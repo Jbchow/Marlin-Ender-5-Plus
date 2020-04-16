@@ -1,4 +1,4 @@
-## Jbchow Ender 5 Plus Version Only
+## Jbchow Ender 5 Plus Version
 Built with PlatformIO with the following options enabled: 
 build_flags = ${common.build_flags} -DMachineEnder5Plus -DHotendAllMetal -DBedDC -DABL_UBL -DForce10SProDisplay -DMeshExtreme -DMelziHostOnly
 
