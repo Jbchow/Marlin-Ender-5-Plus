@@ -315,7 +315,6 @@
   #if DISABLED(ABL_UBL)
     #define ABL_BI
   #endif
-  #define MeshStd
   #define lerdgeFilSensor
   #if DISABLED(BedAC)
     #define BedDC
@@ -329,7 +328,6 @@
   #if DISABLED(ABL_UBL)
     #define ABL_BI
   #endif
-  #define MeshStd
   #define lerdgeFilSensor
   #if DISABLED(BedAC)
     #define BedDC
