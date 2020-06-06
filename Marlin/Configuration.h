@@ -483,7 +483,7 @@
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
 
-#if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11) && NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max) || (ENABLED(GraphicLCD) && NONE(Force10SProDisplay, ForceCRXDisplay))
+#if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11) && (NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max) || (ENABLED(GraphicLCD) && NONE(Force10SProDisplay, ForceCRXDisplay)))
   #define SERIAL_PORT_2 0
 #elif ANY(SKR13, SKR14, SKR14Turbo)
   #define DGUS_SERIAL_PORT 0
@@ -542,6 +542,13 @@
 // For Cyclops or any "multi-extruder" that shares a single nozzle.
 #if ANY(Dual_BowdenSplitterY, Dual_CyclopsSingleNozzle)
   #define SINGLENOZZLE
+#endif
+
+// Save and restore temperature and fan speed on tool-change.
+// Set standby for the unselected tool with M104/106/109 T...
+#if ENABLED(SINGLENOZZLE)
+  #define SINGLENOZZLE_STANDBY_TEMP
+  #define SINGLENOZZLE_STANDBY_FAN
 #endif
 
 /**
@@ -724,7 +731,7 @@
   #define PSU_ACTIVE_HIGH false     // Set 'false' for ATX, 'true' for X-Box
 
   //#define PSU_DEFAULT_OFF         // Keep power off until enabled directly with M80
-  //#define PSU_POWERUP_DELAY 100   // (ms) Delay for the PSU to warm up to full power
+  //#define PSU_POWERUP_DELAY 250   // (ms) Delay for the PSU to warm up to full power
 
   #define AUTO_POWER_CONTROL  // Enable automatic control of the PS_ON pin
   #if ENABLED(AUTO_POWER_CONTROL)
@@ -762,7 +769,7 @@
  *   202 : 200k thermistor - Copymaster 3D
  *     3 : Mendel-parts thermistor (4.7k pullup)
  *     4 : 10k thermistor !! do not use it for a hotend. It gives bad resolution at high temp. !!
- *     5 : 100K thermistor - ATC Semitec 104GT-2/104NT-4-R025H42G (Used in ParCan & J-Head) (4.7k pullup)
+ *     5 : 100K thermistor - ATC Semitec 104GT-2/104NT-4-R025H42G (Used in ParCan, J-Head, and E3D) (4.7k pullup)
  *   501 : 100K Zonestar (Tronxy X3A) Thermistor
  *   512 : 100k RPW-Ultra hotend thermistor (4.7k pullup)
  *     6 : 100k EPCOS - Not as accurate as table 1 (created using a fluke thermocouple) (4.7k pullup)
@@ -771,13 +778,15 @@
  *     8 : 100k 0603 SMD Vishay NTCS0603E3104FXT (4.7k pullup)
  *     9 : 100k GE Sensing AL03006-58.2K-97-G1 (4.7k pullup)
  *    10 : 100k RS thermistor 198-961 (4.7k pullup)
- *    11 : 100k beta 3950 1% thermistor (4.7k pullup)
+ *    11 : 100k beta 3950 1% thermistor (Used in Keenovo AC silicone mats and most Wanhao i3 machines) (4.7k pullup)
  *    12 : 100k 0603 SMD Vishay NTCS0603E3104FXT (4.7k pullup) (calibrated for Makibox hot bed)
  *    13 : 100k Hisens 3950  1% up to 300°C for hotend "Simple ONE " & "Hotend "All In ONE"
  *    15 : 100k thermistor calibration for JGAurora A5 hotend
  *    18 : ATC Semitec 204GT-2 (4.7k pullup) Dagoma.Fr - MKS_Base_DKU001327
  *    20 : Pt100 with circuit in the Ultimainboard V2.x with 5v excitation (AVR)
  *    21 : Pt100 with circuit in the Ultimainboard V2.x with 3.3v excitation (STM32 \ LPC176x....)
+ *    22 : 100k (hotend) with 4.7k pullup to 3.3V and 220R to analog input (as in GTM32 Pro vB)
+ *    23 : 100k (bed) with 4.7k pullup to 3.3v and 220R to analog input (as in GTM32 Pro vB)
  *   201 : Pt100 with circuit in Overlord, similar to Ultimainboard V2.x
  *    60 : 100k Maker's Tool Works Kapton Bed Thermistor beta=3950
  *    61 : 100k Formbot / Vivedino 3950 350C thermistor 4.7k pullup
@@ -793,7 +802,7 @@
  *    52 : 200k thermistor - ATC Semitec 204GT-2 (1k pullup)
  *    55 : 100k thermistor - ATC Semitec 104GT-2 (Used in ParCan & J-Head) (1k pullup)
  *
- *  1047 : Pt1000 with 4k7 pullup
+ *  1047 : Pt1000 with 4k7 pullup (E3D)
  *  1010 : Pt1000 with 1k pullup (non standard)
  *   147 : Pt100 with 4k7 pullup
  *   110 : Pt100 with 1k pullup (non standard)
@@ -806,28 +815,20 @@
  */
 #if ENABLED(ConfigurableThermistors)
   #define TEMP_SENSOR_0 1000
-  #if(ENABLED(Dual_ChimeraDualNozzle))
-    #define TEMP_SENSOR_1 1000
-  #endif
 #elif ENABLED(HotendMosquito)
   #define TEMP_SENSOR_0 67
-  #if(ENABLED(Dual_ChimeraDualNozzle))
-    #define TEMP_SENSOR_1 67
-  #endif
 #elif ENABLED(HotendE3D)
   #define TEMP_SENSOR_0 5
-  #if(ENABLED(Dual_ChimeraDualNozzle))
-    #define TEMP_SENSOR_1 5
-  #endif
 #elif ANY(HotendStock, CrealityThermistor)
   #define TEMP_SENSOR_0 1
-  #if(ENABLED(Dual_ChimeraDualNozzle))
-    #define TEMP_SENSOR_1 1
-  #endif
 #endif
-#if(DISABLED(Dual_ChimeraDualNozzle))
+
+#if DISABLED(Dual_ChimeraDualNozzle)
   #define TEMP_SENSOR_1 0
+#else
+  #define TEMP_SENSOR_1 TEMP_SENSOR_0
 #endif
+
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_3 0
 #define TEMP_SENSOR_4 0
@@ -841,6 +842,8 @@
 #else
 	#define TEMP_SENSOR_BED 0
 #endif
+
+#define TEMP_SENSOR_PROBE 0
 
 #if(ENABLED(EnclosureTempSensor))
   #define TEMP_SENSOR_CHAMBER 147
@@ -1244,6 +1247,8 @@
 //#define E3_DRIVER_TYPE A4988
 //#define E4_DRIVER_TYPE A4988
 //#define E5_DRIVER_TYPE A4988
+//#define E6_DRIVER_TYPE A4988
+//#define E7_DRIVER_TYPE A4988
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
@@ -1255,7 +1260,7 @@
  * Enable if your probe or endstops falsely trigger due to noise.
  *
  * - Higher values may affect repeatability or accuracy of some bed probes.
- * - To fix noise install a 100nF ceramic capacitor inline with the switch.
+ * - To fix noise install a 100nF ceramic capacitor in parallel with the switch.
  * - This feature is not required for common micro-switches mounted on PCBs
  *   based on the Makerbot design, which already have the 100nF capacitor.
  *
@@ -1402,10 +1407,10 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-//#define CLASSIC_JERK
+#define CLASSIC_JERK
 #if ENABLED(CLASSIC_JERK)
   #define DEFAULT_XJERK 10.0
-  #define DEFAULT_YJERK 10.0
+  #define DEFAULT_YJERK 5.0
   #define DEFAULT_ZJERK  0.3
 
   //#define TRAVEL_EXTRA_XYJERK 0.0     // Additional jerk allowance for all travel moves
@@ -1447,15 +1452,18 @@
 // @section probes
 
 //
-// See http://marlinfw.org/docs/configuration/probes.html
+// See https://marlinfw.org/docs/configuration/probes.html
 //
 
 /**
- * Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
- *
- * Enable this option for a probe connected to the Z Min endstop pin.
+ * Enable this option for a probe connected to the Z-MIN pin.
+ * The probe replaces the Z-MIN endstop and is used for Z homing.
+ * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
 #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+
+// Force the use of the probe for Z-axis homing
+#define USE_PROBE_FOR_Z_HOMING
 
 /**
  * Z_MIN_PROBE_PIN
@@ -1893,13 +1901,6 @@
     #define X_MAX_POS 315
     #define Y_MAX_POS 308
     #define ClipClearance 15
-  #elif ENABLED(MachineCR10SPro)
-    #define X_BED_SIZE 300
-    #define Y_BED_SIZE 300
-    #define Z_MAX_POS 400
-    #define X_MAX_POS 315
-    #define Y_MAX_POS 310
-    #define ClipClearance 10
   #elif ENABLED(MachineCR10SProV2)
     #define X_BED_SIZE 300
     #define Y_BED_SIZE 300
@@ -1907,6 +1908,13 @@
     #define X_MAX_POS 315
     #define Y_MAX_POS 310
     #define ClipClearance 5
+  #elif ENABLED(MachineCR10SPro)
+    #define X_BED_SIZE 300
+    #define Y_BED_SIZE 300
+    #define Z_MAX_POS 400
+    #define X_MAX_POS 315
+    #define Y_MAX_POS 310
+    #define ClipClearance 10
   #elif ENABLED(MachineCR10Std)
     #define X_BED_SIZE 300
     #define Y_BED_SIZE 300
@@ -2254,7 +2262,6 @@
  */
 //#define Z_PROBE_END_SCRIPT "G1 Z10 F12000\nG1 X15 Y330\nG1 Z0.5\nG1 Z10"
 
-
 // @section homing
 
 // The center of the bed is at (X=0, Y=0)
@@ -2280,8 +2287,8 @@
 #endif
 
 #if ENABLED(Z_SAFE_HOMING)
-  #define Z_SAFE_HOMING_X_POINT ((X_BED_SIZE) / 2)    // X point for Z homing when homing all axes (G28).
-  #define Z_SAFE_HOMING_Y_POINT ((Y_BED_SIZE) / 2)    // Y point for Z homing when homing all axes (G28).
+  #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing when homing all axes (G28).
+  #define Z_SAFE_HOMING_Y_POINT Y_CENTER  // Y point for Z homing when homing all axes (G28).
 #endif
 
 // Homing speeds (mm/m)
@@ -2423,10 +2430,14 @@
 #if ENABLED(NOZZLE_PARK_FEATURE)
 // Specify a park position as { X, Y, Z }
 #if(ENABLED(MachineEnder2))
-#define NOZZLE_PARK_POINT { (0), (0), 10 }
+  #define NOZZLE_PARK_POINT { (0), (0), 10 }
 #else
-#define NOZZLE_PARK_POINT { (50), (10), 10 }
+  #define NOZZLE_PARK_POINT { (50), (10), 10 }
 #endif
+
+  //#define NOZZLE_PARK_X_ONLY          // X move only is required to park
+  //#define NOZZLE_PARK_Y_ONLY          // Y move only is required to park
+  #define NOZZLE_PARK_Z_RAISE_MIN   2   // (mm) Always raise Z by at least this distance
 #define NOZZLE_PARK_XY_FEEDRATE 50   // X and Y axes feedrate in mm/s (also used for delta printers Z axis)
 #define NOZZLE_PARK_Z_FEEDRATE 5      // Z axis feedrate in mm/s (not used for delta printers)
 #endif
@@ -2474,7 +2485,7 @@
 #endif
 #if ENABLED(NOZZLE_CLEAN_FEATURE)
   // Default number of pattern repetitions
-  #define NOZZLE_CLEAN_STROKES  3
+  #define NOZZLE_CLEAN_STROKES  5
 
   // Default number of triangles
   #define NOZZLE_CLEAN_TRIANGLES  3
@@ -2543,10 +2554,10 @@
  *
  * Select the language to display on the LCD. These languages are available:
  *
- *   en, an, bg, ca, cz, da, de, el, el_gr, es, eu, fi, fr, gl, hr, it, jp_kana,
- *   ko_KR, nl, pl, pt, pt_br, ru, sk, tr, uk, vi, zh_CN, zh_TW, test
+ *   en, an, bg, ca, cz, da, de, el, el_gr, es, eu, fi, fr, gl, hr, hu, it,
+ *   jp_kana, ko_KR, nl, pl, pt, pt_br, ru, sk, tr, uk, vi, zh_CN, zh_TW, test
  *
- * :{ 'en':'English', 'an':'Aragonese', 'bg':'Bulgarian', 'ca':'Catalan', 'cz':'Czech', 'da':'Danish', 'de':'German', 'el':'Greek', 'el_gr':'Greek (Greece)', 'es':'Spanish', 'eu':'Basque-Euskera', 'fi':'Finnish', 'fr':'French', 'gl':'Galician', 'hr':'Croatian', 'it':'Italian', 'jp_kana':'Japanese', 'ko_KR':'Korean (South Korea)', 'nl':'Dutch', 'pl':'Polish', 'pt':'Portuguese', 'pt_br':'Portuguese (Brazilian)', 'ru':'Russian', 'sk':'Slovak', 'tr':'Turkish', 'uk':'Ukrainian', 'vi':'Vietnamese', 'zh_CN':'Chinese (Simplified)', 'zh_TW':'Chinese (Traditional)', 'test':'TEST' }
+ * :{ 'en':'English', 'an':'Aragonese', 'bg':'Bulgarian', 'ca':'Catalan', 'cz':'Czech', 'da':'Danish', 'de':'German', 'el':'Greek', 'el_gr':'Greek (Greece)', 'es':'Spanish', 'eu':'Basque-Euskera', 'fi':'Finnish', 'fr':'French', 'gl':'Galician', 'hr':'Croatian', 'hu':'Hungarian', 'it':'Italian', 'jp_kana':'Japanese', 'ko_KR':'Korean (South Korea)', 'nl':'Dutch', 'pl':'Polish', 'pt':'Portuguese', 'pt_br':'Portuguese (Brazilian)', 'ru':'Russian', 'sk':'Slovak', 'tr':'Turkish', 'uk':'Ukrainian', 'vi':'Vietnamese', 'zh_CN':'Chinese (Simplified)', 'zh_TW':'Chinese (Traditional)', 'test':'TEST' }
  */
 #define LCD_LANGUAGE en
 
@@ -2568,7 +2579,7 @@
  *  - Click the controller to view the LCD menu
  *  - The LCD will display Japanese, Western, or Cyrillic text
  *
- * See http://marlinfw.org/docs/development/lcd_language.html
+ * See https://marlinfw.org/docs/development/lcd_language.html
  *
  * :['JAPANESE', 'WESTERN', 'CYRILLIC']
  */
@@ -3013,13 +3024,15 @@
 
 //
 // DGUS Touch Display with DWIN OS. (Choose one.)
+// ORIGIN : https://www.aliexpress.com/item/32993409517.html
+// FYSETC : https://www.aliexpress.com/item/32961471929.html
 //
 //#define DGUS_LCD_UI_ORIGIN
 //#define DGUS_LCD_UI_FYSETC
 //#define DGUS_LCD_UI_HIPRECY
 
 //
-// Touch-screen LCD for Malyan M200 printers
+// Touch-screen LCD for Malyan M200/M300 printers
 //
 //#define MALYAN_LCD
 
@@ -3116,7 +3129,6 @@
 //#define PCA9632
 
 // Support for PCA9533 PWM LED driver
-// https://github.com/mikeshub/SailfishRGB_LED
 //#define PCA9533
 
 /**

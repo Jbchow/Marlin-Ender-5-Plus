@@ -1607,7 +1607,7 @@ SERIAL_ECHOLN(PSTR("BeginSwitch"));
         {
           char buf[20];
           memset(buf, 0, sizeof(buf));
-          strncpy(buf, "         ", filelen);
+          strncpy(buf, "                    ", filelen);
           strcpy(&buf[filelen], CardRecbuf.Cardshowfilename[(int)CardRecbuf.recordcount]);
           RTS_SndData(buf, Choosefilename);
         }
@@ -1647,7 +1647,7 @@ SERIAL_ECHOLN(PSTR("BeginSwitch"));
           {
             char buf[20];
             memset(buf, 0, sizeof(buf));
-            strncpy(buf, "         ", filelen);
+            strncpy(buf, "                    ", filelen);
             strcpy(&buf[filelen], CardRecbuf.Cardshowfilename[(int)CardRecbuf.recordcount]);
             RTS_SndData(buf, Printfilename);
           }
